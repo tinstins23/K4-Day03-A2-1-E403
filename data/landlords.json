@@ -1,0 +1,93 @@
+[
+  {
+    "id": "LL01",
+    "name": "Nguyễn Văn Thành",
+    "role": "Chủ nhà",
+    "phone": "0912 345 678",
+    "zalo": "0912345678",
+    "rating": 4.7,
+    "review_count": 34,
+    "verified": true,
+    "avg_response_minutes": 15,
+    "preferred_contact_hours": "08:00-20:00",
+    "note": "Chủ nhà ở cùng khu, thân thiện, ưu tiên khách thuê là sinh viên."
+  },
+  {
+    "id": "LL02",
+    "name": "Trần Thị Hồng Nhung",
+    "role": "Chủ nhà",
+    "phone": "0987 654 321",
+    "zalo": "0987654321",
+    "rating": 4.9,
+    "review_count": 58,
+    "verified": true,
+    "avg_response_minutes": 8,
+    "preferred_contact_hours": "09:00-21:00",
+    "note": "Có 2 toà chung cư mini ở Nam Từ Liêm, hỗ trợ làm hợp đồng công chứng."
+  },
+  {
+    "id": "LL03",
+    "name": "Lê Minh Quân",
+    "role": "Môi giới",
+    "phone": "0903 111 222",
+    "zalo": "0903111222",
+    "rating": 4.1,
+    "review_count": 76,
+    "verified": true,
+    "avg_response_minutes": 25,
+    "preferred_contact_hours": "08:30-18:00",
+    "note": "Môi giới khu Đống Đa - Hai Bà Trưng. Phí môi giới 50% tháng đầu."
+  },
+  {
+    "id": "LL04",
+    "name": "Phạm Thị Lan Anh",
+    "role": "Chủ nhà",
+    "phone": "0968 222 333",
+    "zalo": "0968222333",
+    "rating": 4.8,
+    "review_count": 21,
+    "verified": true,
+    "avg_response_minutes": 12,
+    "preferred_contact_hours": "10:00-19:00",
+    "note": "Cho thuê căn hộ cao cấp, yêu cầu hợp đồng tối thiểu 12 tháng."
+  },
+  {
+    "id": "LL05",
+    "name": "Hoàng Đức Trung",
+    "role": "Chủ nhà",
+    "phone": "0977 888 999",
+    "zalo": "0977888999",
+    "rating": 3.9,
+    "review_count": 12,
+    "verified": false,
+    "avg_response_minutes": 90,
+    "preferred_contact_hours": "18:00-22:00",
+    "note": "CHƯA xác minh danh tính. Nhắc khách thuê kiểm tra sổ đỏ trước khi đặt cọc."
+  },
+  {
+    "id": "LL06",
+    "name": "Vũ Thị Kim Chi",
+    "role": "Quản lý toà nhà",
+    "phone": "0945 666 777",
+    "zalo": "0945666777",
+    "rating": 4.5,
+    "review_count": 40,
+    "verified": true,
+    "avg_response_minutes": 20,
+    "preferred_contact_hours": "08:00-17:30",
+    "note": "Quản lý toà căn hộ dịch vụ Kim Mã, có lễ tân và dọn phòng hàng tuần."
+  },
+  {
+    "id": "LL07",
+    "name": "Đặng Quốc Bảo",
+    "role": "Chủ nhà",
+    "phone": "0918 444 555",
+    "zalo": "0918444555",
+    "rating": 4.6,
+    "review_count": 29,
+    "verified": true,
+    "avg_response_minutes": 30,
+    "preferred_contact_hours": "09:00-20:00",
+    "note": "Khu Tây Hồ, ưu tiên khách nước ngoài và khách thuê dài hạn."
+  }
+]

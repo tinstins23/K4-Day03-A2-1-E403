@@ -1,0 +1,573 @@
+[
+  {
+    "id": "P001",
+    "title": "Phòng trọ khép kín, cửa sổ thoáng, gần ĐH Quốc Gia",
+    "landlord_id": "LL01",
+    "type": "phòng trọ",
+    "address": {
+      "street": "Ngõ 175 Xuân Thủy",
+      "ward": "Dịch Vọng Hậu",
+      "district": "Cầu Giấy",
+      "city": "Hà Nội"
+    },
+    "price_vnd": 3200000,
+    "deposit_months": 1,
+    "area_m2": 20,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floor": 3,
+    "has_elevator": false,
+    "furnishing": "cơ bản",
+    "amenities": ["wifi", "điều hòa", "nóng lạnh", "chỗ để xe", "tự do giờ giấc"],
+    "utilities": {
+      "electricity_per_kwh": 3500,
+      "water_per_m3": 25000,
+      "service_fee_vnd": 100000,
+      "parking_fee_vnd": 100000
+    },
+    "rules": {
+      "pets_allowed": false,
+      "curfew": null,
+      "max_occupants": 2
+    },
+    "available_from": "2026-08-01",
+    "status": "available",
+    "near": [
+      { "landmark": "ĐH Quốc Gia Hà Nội", "distance_km": 0.8 },
+      { "landmark": "ĐH Sư Phạm Hà Nội", "distance_km": 1.2 }
+    ]
+  },
+  {
+    "id": "P002",
+    "title": "Chung cư mini full nội thất Dịch Vọng, có thang máy",
+    "landlord_id": "LL01",
+    "type": "chung cư mini",
+    "address": {
+      "street": "Số 24 Trần Thái Tông",
+      "ward": "Dịch Vọng",
+      "district": "Cầu Giấy",
+      "city": "Hà Nội"
+    },
+    "price_vnd": 5500000,
+    "deposit_months": 2,
+    "area_m2": 32,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floor": 5,
+    "has_elevator": true,
+    "furnishing": "đầy đủ",
+    "amenities": ["wifi", "điều hòa", "máy giặt", "tủ lạnh", "thang máy", "bảo vệ 24/7", "chỗ để xe"],
+    "utilities": {
+      "electricity_per_kwh": 3800,
+      "water_per_m3": 30000,
+      "service_fee_vnd": 200000,
+      "parking_fee_vnd": 150000
+    },
+    "rules": {
+      "pets_allowed": false,
+      "curfew": null,
+      "max_occupants": 2
+    },
+    "available_from": "2026-08-05",
+    "status": "available",
+    "near": [
+      { "landmark": "Toà nhà FPT Cầu Giấy", "distance_km": 0.5 },
+      { "landmark": "ĐH Quốc Gia Hà Nội", "distance_km": 1.5 }
+    ]
+  },
+  {
+    "id": "P003",
+    "title": "Studio ban công rộng, view thành phố, gần Keangnam",
+    "landlord_id": "LL02",
+    "type": "studio",
+    "address": {
+      "street": "Ngõ 62 Trần Bình",
+      "ward": "Mỹ Đình 2",
+      "district": "Nam Từ Liêm",
+      "city": "Hà Nội"
+    },
+    "price_vnd": 6800000,
+    "deposit_months": 2,
+    "area_m2": 35,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floor": 7,
+    "has_elevator": true,
+    "furnishing": "đầy đủ",
+    "amenities": ["wifi", "điều hòa", "máy giặt", "tủ lạnh", "ban công", "thang máy", "bảo vệ 24/7"],
+    "utilities": {
+      "electricity_per_kwh": 4000,
+      "water_per_m3": 30000,
+      "service_fee_vnd": 250000,
+      "parking_fee_vnd": 150000
+    },
+    "rules": {
+      "pets_allowed": true,
+      "curfew": null,
+      "max_occupants": 2
+    },
+    "available_from": "2026-08-01",
+    "status": "available",
+    "near": [
+      { "landmark": "Keangnam Landmark 72", "distance_km": 0.9 },
+      { "landmark": "Sân vận động Mỹ Đình", "distance_km": 1.4 }
+    ]
+  },
+  {
+    "id": "P004",
+    "title": "Căn hộ dịch vụ 2PN Mỹ Đình, có lễ tân và dọn phòng",
+    "landlord_id": "LL02",
+    "type": "căn hộ dịch vụ",
+    "address": {
+      "street": "Số 8 Nguyễn Cơ Thạch",
+      "ward": "Cầu Diễn",
+      "district": "Nam Từ Liêm",
+      "city": "Hà Nội"
+    },
+    "price_vnd": 15000000,
+    "deposit_months": 2,
+    "area_m2": 75,
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "floor": 12,
+    "has_elevator": true,
+    "furnishing": "đầy đủ",
+    "amenities": ["wifi", "điều hòa", "máy giặt", "tủ lạnh", "bếp từ", "ban công", "thang máy", "bể bơi", "phòng gym", "bảo vệ 24/7", "dọn phòng hàng tuần"],
+    "utilities": {
+      "electricity_per_kwh": 3500,
+      "water_per_m3": 25000,
+      "service_fee_vnd": 500000,
+      "parking_fee_vnd": 1200000
+    },
+    "rules": {
+      "pets_allowed": false,
+      "curfew": null,
+      "max_occupants": 4
+    },
+    "available_from": "2026-08-10",
+    "status": "available",
+    "near": [
+      { "landmark": "Keangnam Landmark 72", "distance_km": 1.1 },
+      { "landmark": "Trung tâm Hội nghị Quốc gia", "distance_km": 2.0 }
+    ]
+  },
+  {
+    "id": "P005",
+    "title": "Phòng trọ giá rẻ ngõ Chùa Bộc, phù hợp sinh viên",
+    "landlord_id": "LL03",
+    "type": "phòng trọ",
+    "address": {
+      "street": "Ngõ 20 Chùa Bộc",
+      "ward": "Quang Trung",
+      "district": "Đống Đa",
+      "city": "Hà Nội"
+    },
+    "price_vnd": 2500000,
+    "deposit_months": 1,
+    "area_m2": 16,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floor": 2,
+    "has_elevator": false,
+    "furnishing": "trống",
+    "amenities": ["wifi", "chỗ để xe"],
+    "utilities": {
+      "electricity_per_kwh": 4000,
+      "water_per_m3": 35000,
+      "service_fee_vnd": 50000,
+      "parking_fee_vnd": 80000
+    },
+    "rules": {
+      "pets_allowed": false,
+      "curfew": "23:30",
+      "max_occupants": 2
+    },
+    "available_from": "2026-07-30",
+    "status": "available",
+    "near": [
+      { "landmark": "Học viện Ngân hàng", "distance_km": 0.4 },
+      { "landmark": "ĐH Thủy Lợi", "distance_km": 1.0 }
+    ]
+  },
+  {
+    "id": "P006",
+    "title": "Chung cư mini gần ĐH Bách Khoa, mới xây",
+    "landlord_id": "LL03",
+    "type": "chung cư mini",
+    "address": {
+      "street": "Ngõ 4 Tạ Quang Bửu",
+      "ward": "Bách Khoa",
+      "district": "Hai Bà Trưng",
+      "city": "Hà Nội"
+    },
+    "price_vnd": 4800000,
+    "deposit_months": 1,
+    "area_m2": 28,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floor": 4,
+    "has_elevator": true,
+    "furnishing": "cơ bản",
+    "amenities": ["wifi", "điều hòa", "nóng lạnh", "thang máy", "chỗ để xe", "tự do giờ giấc"],
+    "utilities": {
+      "electricity_per_kwh": 3800,
+      "water_per_m3": 30000,
+      "service_fee_vnd": 150000,
+      "parking_fee_vnd": 120000
+    },
+    "rules": {
+      "pets_allowed": false,
+      "curfew": null,
+      "max_occupants": 2
+    },
+    "available_from": "2026-08-01",
+    "status": "available",
+    "near": [
+      { "landmark": "ĐH Bách Khoa Hà Nội", "distance_km": 0.3 },
+      { "landmark": "ĐH Kinh tế Quốc dân", "distance_km": 1.1 },
+      { "landmark": "ĐH Xây Dựng", "distance_km": 0.6 }
+    ]
+  },
+  {
+    "id": "P007",
+    "title": "Căn hộ 2PN Times City, nội thất cao cấp",
+    "landlord_id": "LL04",
+    "type": "căn hộ dịch vụ",
+    "address": {
+      "street": "458 Minh Khai, toà T3 Times City",
+      "ward": "Vĩnh Tuy",
+      "district": "Hai Bà Trưng",
+      "city": "Hà Nội"
+    },
+    "price_vnd": 12000000,
+    "deposit_months": 2,
+    "area_m2": 68,
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "floor": 15,
+    "has_elevator": true,
+    "furnishing": "đầy đủ",
+    "amenities": ["wifi", "điều hòa", "máy giặt", "tủ lạnh", "bếp từ", "ban công", "thang máy", "bể bơi", "phòng gym", "bảo vệ 24/7"],
+    "utilities": {
+      "electricity_per_kwh": 3000,
+      "water_per_m3": 20000,
+      "service_fee_vnd": 700000,
+      "parking_fee_vnd": 1000000
+    },
+    "rules": {
+      "pets_allowed": false,
+      "curfew": null,
+      "max_occupants": 4
+    },
+    "available_from": "2026-08-15",
+    "status": "available",
+    "near": [
+      { "landmark": "Vincom Times City", "distance_km": 0.2 },
+      { "landmark": "Bệnh viện Vinmec", "distance_km": 0.4 }
+    ]
+  },
+  {
+    "id": "P008",
+    "title": "Nhà nguyên căn 3 tầng Thanh Xuân, phù hợp ở ghép",
+    "landlord_id": "LL04",
+    "type": "nhà nguyên căn",
+    "address": {
+      "street": "Ngõ 102 Khuất Duy Tiến",
+      "ward": "Nhân Chính",
+      "district": "Thanh Xuân",
+      "city": "Hà Nội"
+    },
+    "price_vnd": 18000000,
+    "deposit_months": 3,
+    "area_m2": 120,
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "floor": 3,
+    "has_elevator": false,
+    "furnishing": "cơ bản",
+    "amenities": ["wifi", "điều hòa", "nóng lạnh", "sân để xe ô tô", "sân thượng", "tự do giờ giấc"],
+    "utilities": {
+      "electricity_per_kwh": 3000,
+      "water_per_m3": 20000,
+      "service_fee_vnd": 0,
+      "parking_fee_vnd": 0
+    },
+    "rules": {
+      "pets_allowed": true,
+      "curfew": null,
+      "max_occupants": 8
+    },
+    "available_from": "2026-09-01",
+    "status": "available",
+    "near": [
+      { "landmark": "Royal City", "distance_km": 1.8 },
+      { "landmark": "ĐH Kiến Trúc Hà Nội", "distance_km": 1.5 }
+    ]
+  },
+  {
+    "id": "P009",
+    "title": "Phòng trọ có gác xép Khương Trung, giá mềm",
+    "landlord_id": "LL05",
+    "type": "phòng trọ",
+    "address": {
+      "street": "Ngõ 88 Khương Trung",
+      "ward": "Khương Trung",
+      "district": "Thanh Xuân",
+      "city": "Hà Nội"
+    },
+    "price_vnd": 3000000,
+    "deposit_months": 1,
+    "area_m2": 18,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floor": 2,
+    "has_elevator": false,
+    "furnishing": "trống",
+    "amenities": ["wifi", "gác xép", "chỗ để xe"],
+    "utilities": {
+      "electricity_per_kwh": 4000,
+      "water_per_m3": 35000,
+      "service_fee_vnd": 50000,
+      "parking_fee_vnd": 100000
+    },
+    "rules": {
+      "pets_allowed": false,
+      "curfew": "23:00",
+      "max_occupants": 2
+    },
+    "available_from": "2026-07-20",
+    "status": "rented",
+    "near": [
+      { "landmark": "ĐH Kiến Trúc Hà Nội", "distance_km": 1.2 }
+    ]
+  },
+  {
+    "id": "P010",
+    "title": "Studio cao cấp Ba Đình, gần Lăng Bác",
+    "landlord_id": "LL05",
+    "type": "studio",
+    "address": {
+      "street": "Số 15 Đội Cấn",
+      "ward": "Đội Cấn",
+      "district": "Ba Đình",
+      "city": "Hà Nội"
+    },
+    "price_vnd": 9000000,
+    "deposit_months": 2,
+    "area_m2": 40,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floor": 6,
+    "has_elevator": true,
+    "furnishing": "đầy đủ",
+    "amenities": ["wifi", "điều hòa", "máy giặt", "tủ lạnh", "ban công", "thang máy", "bảo vệ 24/7"],
+    "utilities": {
+      "electricity_per_kwh": 3800,
+      "water_per_m3": 30000,
+      "service_fee_vnd": 300000,
+      "parking_fee_vnd": 200000
+    },
+    "rules": {
+      "pets_allowed": false,
+      "curfew": null,
+      "max_occupants": 2
+    },
+    "available_from": "2026-08-01",
+    "status": "available",
+    "near": [
+      { "landmark": "Lăng Chủ tịch Hồ Chí Minh", "distance_km": 1.0 },
+      { "landmark": "Hồ Tây", "distance_km": 1.6 }
+    ]
+  },
+  {
+    "id": "P011",
+    "title": "Căn hộ dịch vụ 1PN Kim Mã, có lễ tân",
+    "landlord_id": "LL06",
+    "type": "căn hộ dịch vụ",
+    "address": {
+      "street": "Số 132 Kim Mã",
+      "ward": "Kim Mã",
+      "district": "Ba Đình",
+      "city": "Hà Nội"
+    },
+    "price_vnd": 11000000,
+    "deposit_months": 1,
+    "area_m2": 45,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floor": 9,
+    "has_elevator": true,
+    "furnishing": "đầy đủ",
+    "amenities": ["wifi", "điều hòa", "máy giặt", "tủ lạnh", "bếp từ", "thang máy", "lễ tân", "dọn phòng hàng tuần", "bảo vệ 24/7"],
+    "utilities": {
+      "electricity_per_kwh": 3500,
+      "water_per_m3": 0,
+      "service_fee_vnd": 0,
+      "parking_fee_vnd": 800000
+    },
+    "rules": {
+      "pets_allowed": false,
+      "curfew": null,
+      "max_occupants": 2
+    },
+    "available_from": "2026-08-01",
+    "status": "available",
+    "near": [
+      { "landmark": "Lotte Center Hà Nội", "distance_km": 0.6 },
+      { "landmark": "Đại sứ quán Nhật Bản", "distance_km": 0.9 }
+    ]
+  },
+  {
+    "id": "P012",
+    "title": "Chung cư mini Trung Hòa, gần siêu thị",
+    "landlord_id": "LL06",
+    "type": "chung cư mini",
+    "address": {
+      "street": "Ngõ 34 Trung Hòa",
+      "ward": "Trung Hòa",
+      "district": "Cầu Giấy",
+      "city": "Hà Nội"
+    },
+    "price_vnd": 5000000,
+    "deposit_months": 1,
+    "area_m2": 30,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floor": 4,
+    "has_elevator": true,
+    "furnishing": "cơ bản",
+    "amenities": ["wifi", "điều hòa", "nóng lạnh", "thang máy", "chỗ để xe"],
+    "utilities": {
+      "electricity_per_kwh": 3800,
+      "water_per_m3": 30000,
+      "service_fee_vnd": 150000,
+      "parking_fee_vnd": 120000
+    },
+    "rules": {
+      "pets_allowed": false,
+      "curfew": null,
+      "max_occupants": 2
+    },
+    "available_from": "2026-07-15",
+    "status": "rented",
+    "near": [
+      { "landmark": "Big C Thăng Long", "distance_km": 1.3 }
+    ]
+  },
+  {
+    "id": "P013",
+    "title": "Phòng trọ khép kín Tây Hồ, yên tĩnh — ĐANG RẤT HOT",
+    "landlord_id": "LL07",
+    "type": "phòng trọ",
+    "address": {
+      "street": "Ngõ 12 Âu Cơ",
+      "ward": "Tứ Liên",
+      "district": "Tây Hồ",
+      "city": "Hà Nội"
+    },
+    "price_vnd": 4000000,
+    "deposit_months": 1,
+    "area_m2": 22,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floor": 2,
+    "has_elevator": false,
+    "furnishing": "cơ bản",
+    "amenities": ["wifi", "điều hòa", "nóng lạnh", "ban công", "chỗ để xe", "tự do giờ giấc"],
+    "utilities": {
+      "electricity_per_kwh": 3500,
+      "water_per_m3": 25000,
+      "service_fee_vnd": 100000,
+      "parking_fee_vnd": 100000
+    },
+    "rules": {
+      "pets_allowed": true,
+      "curfew": null,
+      "max_occupants": 2
+    },
+    "available_from": "2026-08-01",
+    "status": "available",
+    "near": [
+      { "landmark": "Hồ Tây", "distance_km": 0.5 },
+      { "landmark": "Chợ hoa Quảng An", "distance_km": 1.2 }
+    ],
+    "_lab_note": "CÒN TRỐNG nhưng ĐÃ KÍN TOÀN BỘ LỊCH XEM NHÀ. Dùng để test nhánh fallback: Agent tìm thấy nhà nhưng không đặt được lịch."
+  },
+  {
+    "id": "P014",
+    "title": "Căn hộ 2PN view hồ Tây, ban công lớn",
+    "landlord_id": "LL07",
+    "type": "căn hộ dịch vụ",
+    "address": {
+      "street": "Số 89 Xuân Diệu",
+      "ward": "Quảng An",
+      "district": "Tây Hồ",
+      "city": "Hà Nội"
+    },
+    "price_vnd": 16000000,
+    "deposit_months": 2,
+    "area_m2": 80,
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "floor": 8,
+    "has_elevator": true,
+    "furnishing": "đầy đủ",
+    "amenities": ["wifi", "điều hòa", "máy giặt", "tủ lạnh", "bếp từ", "ban công", "thang máy", "view hồ", "bảo vệ 24/7"],
+    "utilities": {
+      "electricity_per_kwh": 3500,
+      "water_per_m3": 25000,
+      "service_fee_vnd": 600000,
+      "parking_fee_vnd": 1000000
+    },
+    "rules": {
+      "pets_allowed": true,
+      "curfew": null,
+      "max_occupants": 4
+    },
+    "available_from": "2026-08-20",
+    "status": "available",
+    "near": [
+      { "landmark": "Hồ Tây", "distance_km": 0.1 },
+      { "landmark": "Phủ Tây Hồ", "distance_km": 1.5 }
+    ]
+  },
+  {
+    "id": "P015",
+    "title": "Phòng trọ gần ĐH Kinh tế Quốc dân, mới sơn sửa",
+    "landlord_id": "LL01",
+    "type": "phòng trọ",
+    "address": {
+      "street": "Ngõ 40 Trần Đại Nghĩa",
+      "ward": "Đồng Tâm",
+      "district": "Hai Bà Trưng",
+      "city": "Hà Nội"
+    },
+    "price_vnd": 3500000,
+    "deposit_months": 1,
+    "area_m2": 20,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "floor": 3,
+    "has_elevator": false,
+    "furnishing": "cơ bản",
+    "amenities": ["wifi", "điều hòa", "nóng lạnh", "chỗ để xe"],
+    "utilities": {
+      "electricity_per_kwh": 3800,
+      "water_per_m3": 30000,
+      "service_fee_vnd": 80000,
+      "parking_fee_vnd": 100000
+    },
+    "rules": {
+      "pets_allowed": false,
+      "curfew": "24:00",
+      "max_occupants": 2
+    },
+    "available_from": "2026-08-01",
+    "status": "pending",
+    "near": [
+      { "landmark": "ĐH Kinh tế Quốc dân", "distance_km": 0.4 },
+      { "landmark": "ĐH Bách Khoa Hà Nội", "distance_km": 1.0 }
+    ],
+    "_lab_note": "status = pending (khách khác đang cọc). Dùng để test: Agent phải TỪ CHỐI đặt lịch và giải thích lý do."
+  }
+]
