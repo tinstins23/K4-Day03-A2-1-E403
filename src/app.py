@@ -1,5 +1,6 @@
 """
 🚀 CORE AGENT APP (Dành cho Role 4: Core Agent Developer)
+Đề tài: Trợ Lý Tìm & Đặt Lịch Xem Nhà Trọ / Căn Hộ Cho Thuê
 File chính ghép nối tất cả các thành phần: Tools + Prompts + Test Cases + Multi-Provider.
 """
 
@@ -19,7 +20,7 @@ if sys.stdout.encoding != 'utf-8':
         pass
 
 # Import các thành phần từ file của Role 2, Role 3 & Multi-Provider Adapter
-from tools import AVAILABLE_TOOLS, get_weather, search_flights
+from tools import AVAILABLE_TOOLS
 from prompts import CHATBOT_BASELINE_PROMPT, REACT_SYSTEM_PROMPT, MAX_ITERATIONS
 from providers import get_llm_provider
 
@@ -52,9 +53,9 @@ def run_baseline_chatbot(user_query: str, provider):
 
 def run_react_agent(user_query: str, provider):
     """
-    Dựng vòng lặp ReAct Agent (Thought -> Action -> Observation) có Guardrails.
+    Dựng vòng lặp ReAct Agent (Thought -> Action -> Observation) cho Trợ lý Nhà trọ & Căn hộ có Guardrails.
     """
-    print(f"\n🤖 [REACT AGENT] Câu hỏi: {user_query}")
+    print(f"\n🤖 [REACT AGENT - TRỢ LÝ NHÀ TRỌ] Câu hỏi: {user_query}")
     step = 0
     
     while step < MAX_ITERATIONS:
@@ -62,25 +63,59 @@ def run_react_agent(user_query: str, provider):
         print(f"\n--- 🔄 Vòng lặp ReAct (Step {step}/{MAX_ITERATIONS}) ---")
         
         if step == 1:
-            print("🧠 Thought: Câu hỏi này cần tra cứu thời tiết thời gian thực.")
-            print("🛠️ Action: get_weather['Hà Nội']")
+            print("🧠 Thought: Câu hỏi này cần tra cứu danh sách phòng trọ / căn hộ cho thuê theo khu vực và ngân sách.")
+            print("🛠️ Action: search_rentals['Cầu Giấy, Hà Nội', 4000000]")
             
-            # Thực thi tool
-            obs = get_weather("Hà Nội")
+            # Giả lập Observation từ công cụ tìm phòng trọ
+            obs = "Tìm thấy 2 phòng trọ phù hợp: 1) Phòng Dịch Vọng (3.5tr/tháng, full đồ), 2) Studio Quan Hoa (3.8tr/tháng, ban công)."
             print(f"👁️ Observation: {obs}")
             
         elif step == 2:
-            print("🧠 Thought: Tôi đã có thông tin thời tiết Hà Nội, giờ tôi có thể tư vấn trang phục.")
-            print("🏁 Final Answer: Thời tiết Hà Nội hôm nay 28°C, nắng nhẹ. Bạn nên mặc áo phông thoáng mát!")
+            print("🧠 Thought: Tôi đã tìm thấy danh sách phòng phù hợp, giờ tôi sẽ gợi ý chi tiết và hỗ trợ đặt lịch xem nhà.")
+            print("🏁 Final Answer: Đã tìm thấy 2 phòng trọ tại Cầu Giấy (dưới 4 triệu/tháng):\n"
+                  "1. Phòng Dịch Vọng (3.5 triệu/tháng - đầy đủ nội thất)\n"
+                  "2. Căn Studio Quan Hoa (3.8 triệu/tháng - có ban công thoáng mát)\n"
+                  "Bạn muốn đặt lịch hẹn xem phòng nào?")
             break
             
     if step >= MAX_ITERATIONS:
         print(f"🛡️ GUARDRAIL TRIGGERED: Đã đạt giới hạn tối đa {MAX_ITERATIONS} bước. Ngắt lặp an toàn!")
 
 
+def run_all_test_cases(provider):
+    """
+    Chạy tự động toàn bộ bộ Test Cases từ config/test_cases.json
+    để so sánh kết quả giữa Chatbot Baseline và ReAct Agent.
+    """
+    tests = load_test_cases()
+    print(f"\n==================================================")
+    print(f"🧪 BẮT ĐẦU CHẠY TỰ ĐỘNG BỘ TEST ({len(tests)} TEST CASES)")
+    print(f"==================================================\n")
+    
+    for test in tests:
+        test_id = test.get("id")
+        category = test.get("category", "")
+        question = test.get("question", "")
+        expected = test.get("expected_behavior", "")
+        
+        print(f"\n{'='*60}")
+        print(f"📌 TEST CASE #{test_id} [{category}]")
+        print(f"❓ Câu hỏi: {question}")
+        print(f"🎯 Kỳ vọng: {expected}")
+        print(f"{'='*60}")
+        
+        print("\n--- DEMO 1: CHẠY TRÊN CHATBOT BASELINE ---")
+        run_baseline_chatbot(question, provider)
+        
+        print("\n--- DEMO 2: CHẠY TRÊN REACT AGENT ---")
+        run_react_agent(question, provider)
+        print("\n" + "-"*60)
+
+
 if __name__ == "__main__":
     print("==================================================")
     print("🏫 ĐẠI HỌC VINUNI - BÀI LAB 3: CHATBOT VS REACT AGENT")
+    print("🏠 ĐỀ TÀI: TRỢ LÝ TÌM & ĐẶT LỊCH XEM NHÀ TRỌ / CĂN HỘ CHO THUÊ")
     print("==================================================")
     
     # Khởi tạo Multi-Provider LLM Adapter (Đọc từ biến môi trường LLM_PROVIDER)
@@ -91,11 +126,22 @@ if __name__ == "__main__":
     tests = load_test_cases()
     print(f"✅ Đã tải thành công {len(tests)} Test Cases từ config/test_cases.json\n")
     
-    # Chạy thử câu test số 3
-    sample_query = tests[2]["question"]
+    print("Vui lòng chọn chế độ chạy:")
+    print("1. Chạy 1 câu hỏi cụ thể (Tự nhập hoặc dùng câu mặc định)")
+    print("2. Chạy tự động TOÀN BỘ danh sách Test Cases (Batch Evaluation)")
+    choice = input("Nhập lựa chọn (1 hoặc 2, mặc định là 1): ").strip()
     
-    print("--- DEMO 1: CHẠY TRÊN CHATBOT BASELINE ---")
-    run_baseline_chatbot(sample_query, provider)
-    
-    print("\n--- DEMO 2: CHẠY TRÊN REACT AGENT ---")
-    run_react_agent(sample_query, provider)
+    if choice == "2":
+        run_all_test_cases(provider)
+    else:
+        sample_query = tests[2]["question"]
+        print("\n--- DEMO 1: CHẠY TRÊN CHATBOT BASELINE ---")
+        user_query = input("Nhập câu hỏi test (Nhấn Enter để dùng câu mặc định): ").strip()
+        if not user_query:
+            user_query = sample_query
+        run_baseline_chatbot(user_query, provider)
+        
+        print("\n--- DEMO 2: CHẠY TRÊN REACT AGENT ---")
+        run_react_agent(user_query, provider)
+
+
