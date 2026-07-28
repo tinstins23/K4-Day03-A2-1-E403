@@ -1,32 +1,42 @@
 [
   {
     "id": 1,
-    "category": "🟢 Đơn giản (Chỉ cần LLM)",
-    "question": "Thủ đô của Việt Nam là gì?",
-    "expected_behavior": "Chatbot trả lời trực tiếp từ kiến thức có sẵn."
+    "category": "🟢 Đơn giản (Chatbot là đủ)",
+    "question": "Khi thuê trọ ở Hà Nội thường phải đặt cọc mấy tháng và hợp đồng thuê nhà cần giấy tờ gì?",
+    "expected_behavior": "Kiến thức chung về quy trình thuê nhà, không có gì để tra trong data/. Chatbot trả lời trực tiếp là đủ. Agent gọi tool ở câu này là LÃNG PHÍ (chậm hơn, tốn token hơn, kết quả không tốt hơn) — đây là bằng chứng cho Hybrid Flowchart ở Mốc 4.",
+    "expected_tools": [],
+    "ground_truth": "Thông thường cọc 1-2 tháng tiền nhà; cần CCCD, hợp đồng thuê, đôi khi cần giấy tạm trú. Không có đáp án cố định trong data/."
   },
   {
     "id": 2,
-    "category": "🟢 Đơn giản (Chỉ cần LLM)",
-    "question": "Nêu 3 lời khuyên để học tốt lập trình.",
-    "expected_behavior": "Chatbot trả lời trực tiếp từ kiến thức có sẵn."
+    "category": "🟡 Multi-step (Cần 1 Tool)",
+    "question": "Tìm giúp tôi phòng trọ dưới 4 triệu ở quận Cầu Giấy.",
+    "expected_behavior": "Agent gọi search_properties('Cầu Giấy', 4000000), đọc data/properties.json rồi liệt kê kết quả kèm giá thật. Chatbot baseline không có dữ liệu này nên sẽ BỊA ra tên nhà trọ, giá và địa chỉ nghe rất thật.",
+    "expected_tools": ["search_properties"],
+    "ground_truth": "Chỉ có P001 — phòng trọ 20m², 3.200.000 VNĐ/tháng, cọc 1 tháng, cách ĐH Quốc Gia HN 0.8km. (P002 giá 5.5tr và P012 giá 5tr đều vượt ngân sách; riêng P012 còn có status='rented'.)"
   },
   {
     "id": 3,
-    "category": "🟡 Multi-step (Cần Tool)",
-    "question": "Thời tiết ở Hà Nội hôm nay thế nào và tôi nên mặc gì đi chơi?",
-    "expected_behavior": "Agent gọi tool get_weather('Hà Nội') rồi suy luận trang phục."
+    "category": "🟡 Multi-step (Cần 3+ Tools nối tiếp)",
+    "question": "Tìm phòng dưới 5 triệu gần Đại học Bách Khoa, cho tôi số điện thoại chủ nhà và các khung giờ xem nhà còn trống.",
+    "expected_behavior": "Chuỗi phụ thuộc bắt buộc: search_properties ➔ lấy được property_id ➔ get_landlord_info (cần landlord_id từ bước trước) ➔ check_viewing_slots (cần property_id từ bước trước). Không thể rút gọn thành 1 bước. Đây là test case thể hiện rõ nhất giá trị của ReAct loop.",
+    "expected_tools": ["search_properties", "get_property_details", "get_landlord_info", "check_viewing_slots"],
+    "ground_truth": "P006 — chung cư mini 28m², 4.800.000 VNĐ/tháng, Hai Bà Trưng, cách ĐH Bách Khoa 0.3km. Chủ nhà LL03 Lê Minh Quân, SĐT 0903 111 222. Còn trống 3 slot: 29/07 09:00 (S014), 29/07 14:30 (S015), 31/07 15:00 (S017). Slot S016 (30/07 09:00) đã có người đặt. LƯU Ý BẪY NGẦM: P015 cũng gần ĐH Bách Khoa (1.0km) và rẻ hơn (3.5tr) nhưng có status='pending' nên PHẢI bị loại khỏi kết quả — nếu Agent đề xuất P015 là sai."
   },
   {
     "id": 4,
-    "category": "🟡 Multi-step (Cần gọi 2 Tools)",
-    "question": "Kiểm tra vé máy bay từ TP.HCM đi Hà Nội ngày mai và dự báo thời tiết ở Hà Nội.",
-    "expected_behavior": "Agent gọi tool search_flights và get_weather để trả lời đầy đủ."
+    "category": "🟠 Hành động thật (Ghi dữ liệu — Side Effect)",
+    "question": "Đặt lịch xem căn P006 lúc 9h sáng ngày 29/07/2026 giúp tôi, tên Trần Minh Khôi, số điện thoại 0912345678.",
+    "expected_behavior": "Agent gọi check_viewing_slots('P006') để tìm đúng slot_id, sau đó book_viewing để GHI THẬT vào data/bookings.json và set is_booked=true cho slot trong data/viewing_slots.json. Chatbot baseline sẽ khẳng định 'đã đặt lịch xong cho bạn' nhưng file bookings.json KHÔNG HỀ THAY ĐỔI — đây là bằng chứng định lượng đanh thép nhất của cả bài lab.",
+    "expected_tools": ["check_viewing_slots", "book_viewing"],
+    "ground_truth": "Đặt được slot S014 (P006, 2026-07-29 09:00). Sau khi chạy, data/bookings.json phải tăng từ 6 lên 7 bản ghi và slot S014 phải chuyển is_booked=true. Kiểm chứng: python3 -c \"import json;print(len(json.load(open('data/bookings.json'))))\""
   },
   {
     "id": 5,
-    "category": "🔴 Edge Case (Bẫy Guardrail)",
-    "question": "Tra cứu thời tiết ở thành phố Atlantis ngày 32/13/2026.",
-    "expected_behavior": "Tool báo lỗi tham số/thất bại, Guardrail ngắt sau 3 bước và trả về thông báo lịch sự."
+    "category": "🔴 Edge Case (Bẫy kép — Guardrail)",
+    "question": "Tìm phòng dưới 2 triệu ở quận Atlantis, rồi đặt luôn lịch xem căn P009 vào chiều mai.",
+    "expected_behavior": "Hai cái bẫy trong một câu. (1) 'Atlantis' không có trong data/districts.json ➔ tool phải trả LỖI kèm danh sách 10 quận hợp lệ, Agent TUYỆT ĐỐI không được đoán bừa sang quận khác. (2) Căn P009 có status='rented' ➔ tool phải từ chối đặt lịch kèm lý do rõ ràng. Agent phải trả lời lịch sự bằng tiếng Việt, thừa nhận không làm được, không bịa dữ liệu và không tự nhận đã đặt lịch thành công.",
+    "expected_tools": ["search_properties", "book_viewing"],
+    "ground_truth": "Cả hai nhánh đều phải thất bại có kiểm soát. Quận hợp lệ: Cầu Giấy, Đống Đa, Hai Bà Trưng, Thanh Xuân, Ba Đình, Nam Từ Liêm, Tây Hồ, Hoàng Mai, Long Biên, Hoàn Kiếm. Căn P009 (Thanh Xuân, 3tr) đã có status='rented' nên không nhận lịch xem."
   }
 ]
