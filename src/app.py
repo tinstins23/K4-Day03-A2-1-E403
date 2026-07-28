@@ -82,36 +82,6 @@ def run_react_agent(user_query: str, provider):
         print(f"🛡️ GUARDRAIL TRIGGERED: Đã đạt giới hạn tối đa {MAX_ITERATIONS} bước. Ngắt lặp an toàn!")
 
 
-def run_all_test_cases(provider):
-    """
-    Chạy tự động toàn bộ bộ Test Cases từ config/test_cases.json
-    để so sánh kết quả giữa Chatbot Baseline và ReAct Agent.
-    """
-    tests = load_test_cases()
-    print(f"\n==================================================")
-    print(f"🧪 BẮT ĐẦU CHẠY TỰ ĐỘNG BỘ TEST ({len(tests)} TEST CASES)")
-    print(f"==================================================\n")
-    
-    for test in tests:
-        test_id = test.get("id")
-        category = test.get("category", "")
-        question = test.get("question", "")
-        expected = test.get("expected_behavior", "")
-        
-        print(f"\n{'='*60}")
-        print(f"📌 TEST CASE #{test_id} [{category}]")
-        print(f"❓ Câu hỏi: {question}")
-        print(f"🎯 Kỳ vọng: {expected}")
-        print(f"{'='*60}")
-        
-        print("\n--- DEMO 1: CHẠY TRÊN CHATBOT BASELINE ---")
-        run_baseline_chatbot(question, provider)
-        
-        print("\n--- DEMO 2: CHẠY TRÊN REACT AGENT ---")
-        run_react_agent(question, provider)
-        print("\n" + "-"*60)
-
-
 if __name__ == "__main__":
     print("==================================================")
     print("🏫 ĐẠI HỌC VINUNI - BÀI LAB 3: CHATBOT VS REACT AGENT")
@@ -126,22 +96,15 @@ if __name__ == "__main__":
     tests = load_test_cases()
     print(f"✅ Đã tải thành công {len(tests)} Test Cases từ config/test_cases.json\n")
     
-    print("Vui lòng chọn chế độ chạy:")
-    print("1. Chạy 1 câu hỏi cụ thể (Tự nhập hoặc dùng câu mặc định)")
-    print("2. Chạy tự động TOÀN BỘ danh sách Test Cases (Batch Evaluation)")
-    choice = input("Nhập lựa chọn (1 hoặc 2, mặc định là 1): ").strip()
+    # Chạy thử câu test số 3
+    sample_query = tests[2]["question"]
     
-    if choice == "2":
-        run_all_test_cases(provider)
-    else:
-        sample_query = tests[2]["question"]
-        print("\n--- DEMO 1: CHẠY TRÊN CHATBOT BASELINE ---")
-        user_query = input("Nhập câu hỏi test (Nhấn Enter để dùng câu mặc định): ").strip()
-        if not user_query:
-            user_query = sample_query
-        run_baseline_chatbot(user_query, provider)
-        
-        print("\n--- DEMO 2: CHẠY TRÊN REACT AGENT ---")
-        run_react_agent(user_query, provider)
-
+    print("--- DEMO 1: CHẠY TRÊN CHATBOT BASELINE ---")
+    user_query = input("Nhập câu hỏi test (Nhấn Enter để dùng câu mặc định): ").strip()
+    if not user_query:
+        user_query = sample_query
+    run_baseline_chatbot(user_query, provider)
+    
+    print("\n--- DEMO 2: CHẠY TRÊN REACT AGENT ---")
+    run_react_agent(user_query, provider)
 
