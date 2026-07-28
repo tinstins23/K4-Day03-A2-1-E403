@@ -95,7 +95,8 @@ if __name__ == "__main__":
     sample_query = tests[2]["question"]
     
     print("--- DEMO 1: CHẠY TRÊN CHATBOT BASELINE ---")
-    run_baseline_chatbot(sample_query, provider)
+    user_query = input()
+    run_baseline_chatbot(user_query, provider)
     
     print("\n--- DEMO 2: CHẠY TRÊN REACT AGENT ---")
     run_react_agent(sample_query, provider)
