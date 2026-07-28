@@ -1,0 +1,66 @@
+%% ═══════════════════════════════════════════════════════════════════
+%% RentMate — HYBRID FLOWCHART (Mốc 4)
+%% Role 5B / Role 5 — Nguyễn Xuân Hùng
+%%
+%% Phân luồng: câu hỏi ĐƠN GIẢN đi đường Chatbot, câu hỏi PHỨC TẠP đi
+%% đường ReAct Agent. Ngưỡng phân luồng lấy từ số liệu đo thật ở Mốc 2 + 3
+%% (docs/trace_eval.md mục 4 và mục 8), không phải phỏng đoán.
+%% ═══════════════════════════════════════════════════════════════════
+
+flowchart TD
+    U([👤 Câu hỏi người dùng]) --> R{{"🧭 ROUTER<br/>Câu hỏi có cần dữ liệu thật<br/>hoặc hành động thật không?"}}
+
+    %% ─────────── NHÁNH CHATBOT ───────────
+    R -->|"KHÔNG — kiến thức chung<br/>(cọc mấy tháng? giấy tờ gì?)"| CB["🤖 CHATBOT BASELINE<br/>1 LLM call · 0 tool"]
+    CB --> CBOUT["💬 Trả lời tư vấn chung"]
+    CBOUT --> DONE([🏁 Trả về người dùng])
+
+    %% ─────────── NHÁNH AGENT ───────────
+    R -->|"CÓ — cần tra data/ hoặc ghi dữ liệu"| AG["🧠 REACT AGENT<br/>MAX_ITERATIONS = 6"]
+
+    AG --> TH["🤔 Thought<br/>LLM suy luận bước tiếp theo"]
+    TH --> FA{"Đã đủ dữ liệu<br/>để trả lời?"}
+    FA -->|Rồi| FIN["🏁 Final Answer"]
+    FIN --> DONE
+
+    FA -->|Chưa| ACT["🛠️ Action: tên_tool[tham_số]"]
+    ACT --> EXIST{"Tool có<br/>tồn tại?"}
+    EXIST -->|Không| G5["🛡️ G5 — trả danh sách<br/>8 tool hợp lệ"]
+    G5 --> OBS
+
+    EXIST -->|Có| TOOLS["⚙️ AVAILABLE_TOOLS<br/>đọc/ghi data/*.json"]
+    TOOLS --> GUARD{"🛡️ GUARDRAIL"}
+
+    GUARD -->|"Quận không có trong<br/>districts.json"| G1["G1 — LỖI + liệt kê<br/>10 quận hợp lệ<br/>KHÔNG đoán bừa"]
+    GUARD -->|"status != available<br/>(P009 rented, P015 pending)"| G2["G2 — Từ chối đặt lịch<br/>kèm lý do rõ ràng"]
+    GUARD -->|"Hết slot trống<br/>(P013)"| G3["G3 — Đề xuất căn khác<br/>recommend_properties"]
+    GUARD -->|Hợp lệ| OK["✅ Chạy tool<br/>create_booking ➔ GHI THẬT<br/>bookings.json 6 ➔ 7"]
+
+    G1 --> OBS["👁️ Observation<br/>⚠️ DO CODE PYTHON CHÈN"]
+    G2 --> OBS
+    G3 --> OBS
+    OK --> OBS
+
+    OBS --> CUT{"LLM có tự bịa<br/>dòng Observation?"}
+    CUT -->|Có| SNIP["✂️ Cắt bỏ phần bịa<br/>chỉ giữ kết quả tool thật"]
+    SNIP --> LOOP
+    CUT -->|Không| LOOP{"Đã chạm<br/>MAX_ITERATIONS?"}
+
+    LOOP -->|Chưa| TH
+    LOOP -->|Rồi| G4["🛡️ G4 — Dừng an toàn<br/>Fallback lịch sự tiếng Việt<br/>không crash, không im lặng"]
+    G4 --> DONE
+
+    %% ─────────── STYLE ───────────
+    classDef router fill:#fff4d6,stroke:#c98a00,stroke-width:2px,color:#3d2c00
+    classDef chatbot fill:#e6f0ff,stroke:#2f6df6,stroke-width:2px,color:#0b2a63
+    classDef agent fill:#efe6ff,stroke:#7a45d1,stroke-width:2px,color:#2c1258
+    classDef guard fill:#ffe6e6,stroke:#c02626,stroke-width:2px,color:#5c0d0d
+    classDef okstep fill:#e6f6ed,stroke:#12864a,stroke-width:2px,color:#06331e
+    classDef endnode fill:#eef0f3,stroke:#5a6472,stroke-width:2px,color:#1c2028
+
+    class R,FA,EXIST,GUARD,CUT,LOOP router
+    class CB,CBOUT chatbot
+    class AG,TH,ACT,TOOLS,OBS,SNIP agent
+    class G1,G2,G3,G4,G5 guard
+    class OK,FIN okstep
+    class U,DONE endnode
