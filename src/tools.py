@@ -20,6 +20,24 @@ def load_json(filename):
     """
     with open(DATA_DIR / filename, "r", encoding="utf-8") as f:
         return json.load(f)
+
+
+def save_json(filename, data):
+    """
+    Ghi dữ liệu Python xuống một file JSON trong thư mục data.
+
+    Args:
+        filename (str): Tên file JSON.
+        data (dict | list): Dữ liệu cần ghi.
+
+    Returns:
+        None
+
+    Side effect:
+        GHI ĐÈ file trên đĩa. Chỉ create_booking được phép gọi hàm này.
+    """
+    with open(DATA_DIR / filename, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
 PROPERTIES = load_json("properties.json")
 DISTRICTS = load_json("districts.json")
 LANDLORDS = load_json("landlords.json")
@@ -41,7 +59,19 @@ def validate_district(district: str) -> str:
     Returns:
         str:
             - "VALID" nếu quận hợp lệ.
-            - Chuỗi lỗi nếu quận không tồn tại.
+            - Chuỗi lỗi KÈM danh sách quận hợp lệ nếu quận không tồn tại.
+
+    Error semantics:
+        Không bao giờ raise. Quận sai ➔ trả chuỗi bắt đầu bằng "LỖI:" và liệt kê
+        đủ các quận hợp lệ để Agent tự sửa ở vòng lặp sau, thay vì đoán bừa.
+
+    Side effect:
+        Không. Chỉ đọc DISTRICTS.
+
+    Ví dụ:
+        validate_district("Cầu Giấy")  ➔ "VALID"
+        validate_district("Atlantis")  ➔ "LỖI: Quận 'Atlantis' không tồn tại...
+                                          Các quận hợp lệ: Cầu Giấy, Đống Đa, ..."
     """
 
     keyword = district.lower().strip()
@@ -54,7 +84,12 @@ def validate_district(district: str) -> str:
         if keyword in item["aliases"]:
             return "VALID"
 
-    return f"LỖI: Quận '{district}' không tồn tại trong hệ thống."
+    hop_le = ", ".join(item["name"] for item in DISTRICTS["districts"])
+    return (
+        f"LỖI: Quận '{district}' không tồn tại trong hệ thống. "
+        f"Các quận hợp lệ: {hop_le}. "
+        f"KHÔNG được tự đoán sang quận khác — hãy hỏi lại người dùng."
+    )
 
 def search_properties(
     district: str,
@@ -80,14 +115,27 @@ def search_properties(
                 - căn hộ dịch vụ
 
     Returns:
-        list:
-            Danh sách các bất động sản phù hợp.
-            Nếu không có sẽ trả về danh sách rỗng.
+        list | str:
+            - list: danh sách bất động sản phù hợp (rỗng nếu không có căn nào khớp).
+            - str : chuỗi "LỖI: ..." nếu quận không tồn tại.
+
+    Error semantics:
+        Không bao giờ raise. Quận sai ➔ trả chuỗi lỗi kèm danh sách quận hợp lệ,
+        KHÔNG trả list rỗng — vì list rỗng khiến Agent không phân biệt được
+        "quận không tồn tại" với "không có phòng nào phù hợp".
+
+    Side effect:
+        Không. Chỉ đọc PROPERTIES.
+
+    Ví dụ:
+        search_properties("Cầu Giấy", 4000000) ➔ [ {..P001..} ]
+        search_properties("Atlantis", 2000000) ➔ "LỖI: Quận 'Atlantis' không tồn tại..."
     """
 
-    # Kiểm tra quận
-    if validate_district(district) != "VALID":
-        return []
+    # Kiểm tra quận — trả nguyên chuỗi lỗi để Agent biết lý do thật
+    kiem_tra = validate_district(district)
+    if kiem_tra != "VALID":
+        return kiem_tra
 
     results = []
 
@@ -287,7 +335,28 @@ def create_booking(
     Returns:
         dict:
             Booking vừa tạo hoặc thông báo lỗi.
+
+    Error semantics:
+        Không bao giờ raise. Mọi trường hợp hỏng đều trả
+        {"success": False, "message": "<lý do cụ thể>"}.
+
+    Side effect:
+        ⚠️ ĐÂY LÀ TOOL DUY NHẤT GHI DỮ LIỆU.
+        Ghi thật xuống data/bookings.json và data/viewing_slots.json.
+        Hai file luôn đồng bộ: thêm 1 booking ➔ set is_booked=True cho slot đó.
+
+    An toàn:
+        Từ chối nếu căn không tồn tại · căn có status != 'available' ·
+        slot không tồn tại · slot đã có người đặt.
+        Muốn đưa dữ liệu về ban đầu: git checkout data/
+
+    Ví dụ:
+        create_booking("P006", "S014", "Trần Minh Khôi", "0912345678")
+        ➔ {"success": True, "booking": {...}}   (bookings.json 6 ➔ 7)
     """
+
+    # Số điện thoại luôn là chuỗi — giữ nguyên số 0 đứng đầu
+    customer_phone = str(customer_phone)
 
     # 1. Kiểm tra căn hộ có tồn tại không
     property_info = get_property_details(property_id)
@@ -296,6 +365,20 @@ def create_booking(
         return {
             "success": False,
             "message": "Không tìm thấy bất động sản."
+        }
+
+    # 1b. GUARDRAIL: chỉ nhận lịch xem cho căn đang còn cho thuê
+    if property_info.get("status") != "available":
+        nhan = {
+            "rented": "đã được cho thuê",
+            "pending": "đang trong quá trình chốt hợp đồng, chưa nhận lịch xem",
+        }.get(property_info["status"], f"đang ở trạng thái '{property_info['status']}'")
+        return {
+            "success": False,
+            "message": (
+                f"Không thể đặt lịch: căn {property_id} {nhan}. "
+                f"Vui lòng chọn căn khác đang còn trống."
+            ),
         }
 
     # 2. Kiểm tra slot
@@ -336,11 +419,26 @@ def create_booking(
         "status": "confirmed"
     }
 
-    # 6. Thêm vào danh sách booking
+    # 6. Thêm vào danh sách booking (bộ nhớ)
     BOOKINGS.append(booking)
 
-    # 7. Cập nhật slot
+    # 7. Cập nhật slot (bộ nhớ)
     slot["is_booked"] = True
+
+    # 8. GHI THẬT XUỐNG ĐĨA — nếu thiếu bước này thì mọi thay đổi mất khi tắt
+    #    chương trình, và bookings.json vĩnh viễn đứng yên.
+    #    Hai file phải ghi cùng lúc để không lệch trạng thái.
+    try:
+        save_json("bookings.json", BOOKINGS)
+        save_json("viewing_slots.json", VIEWING_SLOTS)
+    except Exception as e:
+        # Hoàn tác thay đổi trong bộ nhớ để không lệch với đĩa
+        BOOKINGS.pop()
+        slot["is_booked"] = False
+        return {
+            "success": False,
+            "message": f"Không ghi được dữ liệu xuống đĩa: {e}. Lịch hẹn CHƯA được tạo."
+        }
 
     return {
         "success": True,

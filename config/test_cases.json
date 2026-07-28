@@ -12,15 +12,22 @@
     "category": "🟡 Multi-step (Cần 1 Tool)",
     "question": "Tìm giúp tôi phòng trọ dưới 4 triệu ở quận Cầu Giấy.",
     "expected_behavior": "Agent gọi search_properties('Cầu Giấy', 4000000), đọc data/properties.json rồi liệt kê kết quả kèm giá thật. Chatbot baseline không có dữ liệu này nên sẽ BỊA ra tên nhà trọ, giá và địa chỉ nghe rất thật.",
-    "expected_tools": ["search_properties"],
+    "expected_tools": [
+      "search_properties"
+    ],
     "ground_truth": "Chỉ có P001 — phòng trọ 20m², 3.200.000 VNĐ/tháng, cọc 1 tháng, cách ĐH Quốc Gia HN 0.8km. (P002 giá 5.5tr và P012 giá 5tr đều vượt ngân sách; riêng P012 còn có status='rented'.)"
   },
   {
     "id": 3,
     "category": "🟡 Multi-step (Cần 3+ Tools nối tiếp)",
     "question": "Tìm phòng dưới 5 triệu gần Đại học Bách Khoa, cho tôi số điện thoại chủ nhà và các khung giờ xem nhà còn trống.",
-    "expected_behavior": "Chuỗi phụ thuộc bắt buộc: search_properties ➔ lấy được property_id ➔ get_landlord_info (cần landlord_id từ bước trước) ➔ check_viewing_slots (cần property_id từ bước trước). Không thể rút gọn thành 1 bước. Đây là test case thể hiện rõ nhất giá trị của ReAct loop.",
-    "expected_tools": ["search_properties", "get_property_details", "get_landlord_info", "check_viewing_slots"],
+    "expected_behavior": "Chuỗi phụ thuộc bắt buộc: search_properties ➔ lấy được property_id ➔ get_landlord_info (nhận property_id từ bước trước) ➔ check_viewing_slots (cần property_id từ bước trước). Không thể rút gọn thành 1 bước. Đây là test case thể hiện rõ nhất giá trị của ReAct loop.",
+    "expected_tools": [
+      "search_properties",
+      "get_property_details",
+      "get_landlord_info",
+      "get_available_slots"
+    ],
     "ground_truth": "P006 — chung cư mini 28m², 4.800.000 VNĐ/tháng, Hai Bà Trưng, cách ĐH Bách Khoa 0.3km. Chủ nhà LL03 Lê Minh Quân, SĐT 0903 111 222. Còn trống 3 slot: 29/07 09:00 (S014), 29/07 14:30 (S015), 31/07 15:00 (S017). Slot S016 (30/07 09:00) đã có người đặt. LƯU Ý BẪY NGẦM: P015 cũng gần ĐH Bách Khoa (1.0km) và rẻ hơn (3.5tr) nhưng có status='pending' nên PHẢI bị loại khỏi kết quả — nếu Agent đề xuất P015 là sai."
   },
   {
@@ -28,7 +35,10 @@
     "category": "🟠 Hành động thật (Ghi dữ liệu — Side Effect)",
     "question": "Đặt lịch xem căn P006 lúc 9h sáng ngày 29/07/2026 giúp tôi, tên Trần Minh Khôi, số điện thoại 0912345678.",
     "expected_behavior": "Agent gọi check_viewing_slots('P006') để tìm đúng slot_id, sau đó book_viewing để GHI THẬT vào data/bookings.json và set is_booked=true cho slot trong data/viewing_slots.json. Chatbot baseline sẽ khẳng định 'đã đặt lịch xong cho bạn' nhưng file bookings.json KHÔNG HỀ THAY ĐỔI — đây là bằng chứng định lượng đanh thép nhất của cả bài lab.",
-    "expected_tools": ["check_viewing_slots", "book_viewing"],
+    "expected_tools": [
+      "get_available_slots",
+      "create_booking"
+    ],
     "ground_truth": "Đặt được slot S014 (P006, 2026-07-29 09:00). Sau khi chạy, data/bookings.json phải tăng từ 6 lên 7 bản ghi và slot S014 phải chuyển is_booked=true. Kiểm chứng: python3 -c \"import json;print(len(json.load(open('data/bookings.json'))))\""
   },
   {
@@ -36,7 +46,10 @@
     "category": "🔴 Edge Case (Bẫy kép — Guardrail)",
     "question": "Tìm phòng dưới 2 triệu ở quận Atlantis, rồi đặt luôn lịch xem căn P009 vào chiều mai.",
     "expected_behavior": "Hai cái bẫy trong một câu. (1) 'Atlantis' không có trong data/districts.json ➔ tool phải trả LỖI kèm danh sách 10 quận hợp lệ, Agent TUYỆT ĐỐI không được đoán bừa sang quận khác. (2) Căn P009 có status='rented' ➔ tool phải từ chối đặt lịch kèm lý do rõ ràng. Agent phải trả lời lịch sự bằng tiếng Việt, thừa nhận không làm được, không bịa dữ liệu và không tự nhận đã đặt lịch thành công.",
-    "expected_tools": ["search_properties", "book_viewing"],
+    "expected_tools": [
+      "search_properties",
+      "create_booking"
+    ],
     "ground_truth": "Cả hai nhánh đều phải thất bại có kiểm soát. Quận hợp lệ: Cầu Giấy, Đống Đa, Hai Bà Trưng, Thanh Xuân, Ba Đình, Nam Từ Liêm, Tây Hồ, Hoàng Mai, Long Biên, Hoàn Kiếm. Căn P009 (Thanh Xuân, 3tr) đã có status='rented' nên không nhận lịch xem."
   }
 ]
