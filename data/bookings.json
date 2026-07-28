@@ -1,0 +1,74 @@
+[
+  {
+    "booking_id": "BK20260726001",
+    "property_id": "P001",
+    "slot_id": "S002",
+    "date": "2026-07-29",
+    "time": "15:00",
+    "customer_name": "Ngô Thị Mai",
+    "customer_phone": "0961 234 567",
+    "note": "Khách hẹn xem cùng bạn cùng phòng.",
+    "created_at": "2026-07-26 20:14",
+    "status": "confirmed"
+  },
+  {
+    "booking_id": "BK20260727002",
+    "property_id": "P005",
+    "slot_id": "S012",
+    "date": "2026-07-29",
+    "time": "17:00",
+    "customer_name": "Bùi Văn Sơn",
+    "customer_phone": "0934 567 890",
+    "note": "",
+    "created_at": "2026-07-27 09:02",
+    "status": "confirmed"
+  },
+  {
+    "booking_id": "BK20260727003",
+    "property_id": "P006",
+    "slot_id": "S016",
+    "date": "2026-07-30",
+    "time": "09:00",
+    "customer_name": "Trịnh Hoàng Long",
+    "customer_phone": "0902 345 678",
+    "note": "Sinh viên Bách Khoa, xem phòng buổi sáng.",
+    "created_at": "2026-07-27 15:40",
+    "status": "confirmed"
+  },
+  {
+    "booking_id": "BK20260725004",
+    "property_id": "P013",
+    "slot_id": "S026",
+    "date": "2026-07-29",
+    "time": "09:00",
+    "customer_name": "Lý Thu Hà",
+    "customer_phone": "0913 888 222",
+    "note": "",
+    "created_at": "2026-07-25 11:20",
+    "status": "confirmed"
+  },
+  {
+    "booking_id": "BK20260725005",
+    "property_id": "P013",
+    "slot_id": "S027",
+    "date": "2026-07-29",
+    "time": "15:00",
+    "customer_name": "Phan Đức Duy",
+    "customer_phone": "0987 111 000",
+    "note": "",
+    "created_at": "2026-07-25 14:05",
+    "status": "confirmed"
+  },
+  {
+    "booking_id": "BK20260726006",
+    "property_id": "P013",
+    "slot_id": "S028",
+    "date": "2026-07-30",
+    "time": "10:00",
+    "customer_name": "Đỗ Khánh Linh",
+    "customer_phone": "0977 333 444",
+    "note": "Khách quan tâm ban công.",
+    "created_at": "2026-07-26 08:47",
+    "status": "confirmed"
+  }
+]
