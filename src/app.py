@@ -51,35 +51,124 @@ def run_baseline_chatbot(user_query: str, provider):
     print(f"🤖 Chatbot trả lời:\n{response}")
 
 
-def run_react_agent(user_query: str, provider):
+import ast
+import re
+
+def parse_action_string(text: str):
+    """Trích xuất tên tool và danh sách tham số từ câu trả lời của LLM"""
+    match = re.search(r"Action:\s*(\w+)\s*[\[\(](.*?)[\]\)]", text, re.DOTALL | re.IGNORECASE)
+    if match:
+        tool_name = match.group(1).strip()
+        raw_args = match.group(2).strip()
+        if not raw_args:
+            return tool_name, []
+        try:
+            parsed = ast.literal_eval(f"[{raw_args}]")
+            if isinstance(parsed, list):
+                return tool_name, parsed
+        except Exception:
+            pass
+        args_list = [p.strip().strip("'\"") for p in raw_args.split(",")]
+        cleaned_args = [int(a) if a.isdigit() else a for a in args_list]
+        return tool_name, cleaned_args
+
+    match_colon = re.search(r"Action:\s*(\w+)\s*[:\s]\s*(.*)", text, re.IGNORECASE)
+    if match_colon:
+        tool_name = match_colon.group(1).strip()
+        raw_args = match_colon.group(2).strip()
+        args_list = [p.strip().strip("'\"") for p in raw_args.split(",") if p.strip()]
+        cleaned_args = [int(a) if a.isdigit() else a for a in args_list]
+        return tool_name, cleaned_args
+
+    return None, []
+
+
+def execute_tool_call(tool_name: str, args: list):
+    """Gọi và thực thi công cụ từ AVAILABLE_TOOLS trong tools.py"""
+    if tool_name not in AVAILABLE_TOOLS:
+        return f"LỖI: Công cụ '{tool_name}' không tồn tại. Các công cụ khả dụng: {list(AVAILABLE_TOOLS.keys())}"
+
+    func = AVAILABLE_TOOLS[tool_name]
+    try:
+        res = func(*args)
+        if isinstance(res, (dict, list)):
+            return json.dumps(res, ensure_ascii=False, indent=2)
+        return str(res)
+    except Exception as e:
+        return f"LỖI thực thi tool '{tool_name}': {str(e)}"
+
+
+def start_interactive_chat_session(provider, initial_query: str = ""):
     """
-    Dựng vòng lặp ReAct Agent (Thought -> Action -> Observation) cho Trợ lý Nhà trọ & Căn hộ có Guardrails.
+    Khởi chạy phiên trò chuyện tương tác đa lượt (Multi-turn Chat) với ReAct Agent.
+    Duy trì bộ nhớ cuộc thoại (Context) liên tục và KHÔNG tự ngắt khi AI trả lời xong.
     """
-    print(f"\n🤖 [REACT AGENT - TRỢ LÝ NHÀ TRỌ] Câu hỏi: {user_query}")
-    step = 0
+    print("\n==================================================")
+    print("💬 PHIÊN TRÒ CHUYỆN TƯƠNG TÁC ĐA LƯỢT VỚI REACT AGENT")
+    print("👉 Gõ 'exit', 'quit' hoặc 'q' để thoát khỏi ứng dụng.")
+    print("==================================================\n")
     
-    while step < MAX_ITERATIONS:
-        step += 1
-        print(f"\n--- 🔄 Vòng lặp ReAct (Step {step}/{MAX_ITERATIONS}) ---")
-        
-        if step == 1:
-            print("🧠 Thought: Câu hỏi này cần tra cứu danh sách phòng trọ / căn hộ cho thuê theo khu vực và ngân sách.")
-            print("🛠️ Action: search_rentals['Cầu Giấy, Hà Nội', 4000000]")
+    conversation_history = ""
+    first_turn = True
+    
+    while True:
+        if first_turn and initial_query:
+            user_input = initial_query
+            first_turn = False
+            print(f"👤 Người dùng: {user_input}")
+        else:
+            try:
+                user_input = input("\n👤 Người dùng: ").strip()
+            except (KeyboardInterrupt, EOFError):
+                print("\n👋 Đã kết thúc phiên trò chuyện.")
+                break
+                
+        if not user_input:
+            continue
             
-            # Giả lập Observation từ công cụ tìm phòng trọ
-            obs = "Tìm thấy 2 phòng trọ phù hợp: 1) Phòng Dịch Vọng (3.5tr/tháng, full đồ), 2) Studio Quan Hoa (3.8tr/tháng, ban công)."
-            print(f"👁️ Observation: {obs}")
-            
-        elif step == 2:
-            print("🧠 Thought: Tôi đã tìm thấy danh sách phòng phù hợp, giờ tôi sẽ gợi ý chi tiết và hỗ trợ đặt lịch xem nhà.")
-            print("🏁 Final Answer: Đã tìm thấy 2 phòng trọ tại Cầu Giấy (dưới 4 triệu/tháng):\n"
-                  "1. Phòng Dịch Vọng (3.5 triệu/tháng - đầy đủ nội thất)\n"
-                  "2. Căn Studio Quan Hoa (3.8 triệu/tháng - có ban công thoáng mát)\n"
-                  "Bạn muốn đặt lịch hẹn xem phòng nào?")
+        if user_input.lower() in ["exit", "quit", "q"]:
+            print("👋 Cảm ơn bạn đã sử dụng Trợ lý Tìm & Đặt Lịch Xem Nhà Trọ!")
             break
             
-    if step >= MAX_ITERATIONS:
-        print(f"🛡️ GUARDRAIL TRIGGERED: Đã đạt giới hạn tối đa {MAX_ITERATIONS} bước. Ngắt lặp an toàn!")
+        # Nối câu hỏi của người dùng vào lịch sử cuộc thoại
+        conversation_history += f"Question: {user_input}\n"
+        step = 0
+        
+        while step < MAX_ITERATIONS:
+            step += 1
+            print(f"\n--- 🔄 Vòng lặp ReAct (Step {step}/{MAX_ITERATIONS}) ---")
+            
+            # 1. Gọi Model LLM thực tế để suy luận (Thought & Action)
+            llm_output = provider.generate(conversation_history, system_prompt=REACT_SYSTEM_PROMPT).strip()
+            print(f"🤖 LLM suy luận:\n{llm_output}")
+            
+            # Lưu phản hồi của LLM vào lịch sử cuộc thoại
+            conversation_history += f"\n{llm_output}\n"
+            
+            # 2. Kiểm tra nếu LLM đưa ra kết quả cuối cùng (Final Answer)
+            if "Final Answer:" in llm_output:
+                final_answer = llm_output.split("Final Answer:", 1)[1].strip()
+                print(f"\n🏁 [TRỢ LÝ TRẢ LỜI]:\n{final_answer}")
+                break
+                
+            # 3. Trích xuất Action và gọi Tool
+            tool_name, args = parse_action_string(llm_output)
+            if tool_name:
+                print(f"🛠️ [THỰC THI TOOL]: {tool_name}{args}")
+                obs = execute_tool_call(tool_name, args)
+                print(f"👁️ [OBSERVATION (KẾT QUẢ TOOL)]:\n{obs}")
+                
+                # Cập nhật Observation vào lịch sử cuộc thoại
+                conversation_history += f"Observation: {obs}\n"
+            else:
+                if not llm_output:
+                    print("⚠️ Model không trả về kết quả.")
+                    break
+                print("ℹ️ Model dừng gọi tool, sẵn sàng nhận câu hỏi tiếp theo.")
+                break
+
+        if step >= MAX_ITERATIONS:
+            print(f"\n🛡️ GUARDRAIL TRIGGERED: Đã đạt giới hạn tối đa {MAX_ITERATIONS} bước suy luận cho lượt hỏi này!")
 
 
 if __name__ == "__main__":
@@ -96,15 +185,16 @@ if __name__ == "__main__":
     tests = load_test_cases()
     print(f"✅ Đã tải thành công {len(tests)} Test Cases từ config/test_cases.json\n")
     
-    # Chạy thử câu test số 3
     sample_query = tests[2]["question"]
-    
-    print("--- DEMO 1: CHẠY TRÊN CHATBOT BASELINE ---")
     user_query = input("Nhập câu hỏi test (Nhấn Enter để dùng câu mặc định): ").strip()
     if not user_query:
         user_query = sample_query
+
+    print("\n--- DEMO 1: CHẠY TRÊN CHATBOT BASELINE (KHÔNG CÓ TOOL) ---")
     run_baseline_chatbot(user_query, provider)
     
-    print("\n--- DEMO 2: CHẠY TRÊN REACT AGENT ---")
-    run_react_agent(user_query, provider)
+    print("\n--- DEMO 2: CHẠY TRÊN REACT AGENT (TƯƠNG TÁC ĐA LƯỢT LIÊN TỤC) ---")
+    start_interactive_chat_session(provider, initial_query=user_query)
+
+
 
