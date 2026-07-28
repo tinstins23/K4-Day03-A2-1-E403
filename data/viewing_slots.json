@@ -1,0 +1,45 @@
+[
+  { "slot_id": "S001", "property_id": "P001", "date": "2026-07-29", "time": "09:00", "is_booked": false },
+  { "slot_id": "S002", "property_id": "P001", "date": "2026-07-29", "time": "15:00", "is_booked": true },
+  { "slot_id": "S003", "property_id": "P001", "date": "2026-07-30", "time": "10:00", "is_booked": false },
+
+  { "slot_id": "S004", "property_id": "P002", "date": "2026-07-29", "time": "14:00", "is_booked": false },
+  { "slot_id": "S005", "property_id": "P002", "date": "2026-07-30", "time": "09:30", "is_booked": false },
+  { "slot_id": "S006", "property_id": "P002", "date": "2026-07-31", "time": "16:00", "is_booked": false },
+
+  { "slot_id": "S007", "property_id": "P003", "date": "2026-07-30", "time": "10:00", "is_booked": false },
+  { "slot_id": "S008", "property_id": "P003", "date": "2026-07-31", "time": "14:00", "is_booked": false },
+
+  { "slot_id": "S009", "property_id": "P004", "date": "2026-07-31", "time": "10:00", "is_booked": false },
+  { "slot_id": "S010", "property_id": "P004", "date": "2026-08-01", "time": "15:00", "is_booked": false },
+
+  { "slot_id": "S011", "property_id": "P005", "date": "2026-07-29", "time": "08:30", "is_booked": false },
+  { "slot_id": "S012", "property_id": "P005", "date": "2026-07-29", "time": "17:00", "is_booked": true },
+  { "slot_id": "S013", "property_id": "P005", "date": "2026-07-30", "time": "17:30", "is_booked": false },
+
+  { "slot_id": "S014", "property_id": "P006", "date": "2026-07-29", "time": "09:00", "is_booked": false },
+  { "slot_id": "S015", "property_id": "P006", "date": "2026-07-29", "time": "14:30", "is_booked": false },
+  { "slot_id": "S016", "property_id": "P006", "date": "2026-07-30", "time": "09:00", "is_booked": true },
+  { "slot_id": "S017", "property_id": "P006", "date": "2026-07-31", "time": "15:00", "is_booked": false },
+
+  { "slot_id": "S018", "property_id": "P007", "date": "2026-08-01", "time": "10:00", "is_booked": false },
+  { "slot_id": "S019", "property_id": "P007", "date": "2026-08-01", "time": "14:00", "is_booked": false },
+
+  { "slot_id": "S020", "property_id": "P008", "date": "2026-08-01", "time": "09:00", "is_booked": false },
+  { "slot_id": "S021", "property_id": "P008", "date": "2026-08-02", "time": "10:00", "is_booked": false },
+
+  { "slot_id": "S022", "property_id": "P010", "date": "2026-07-30", "time": "11:00", "is_booked": false },
+  { "slot_id": "S023", "property_id": "P010", "date": "2026-07-31", "time": "09:00", "is_booked": false },
+
+  { "slot_id": "S024", "property_id": "P011", "date": "2026-07-29", "time": "16:00", "is_booked": false },
+  { "slot_id": "S025", "property_id": "P011", "date": "2026-07-30", "time": "14:00", "is_booked": false },
+
+  { "slot_id": "S026", "property_id": "P013", "date": "2026-07-29", "time": "09:00", "is_booked": true },
+  { "slot_id": "S027", "property_id": "P013", "date": "2026-07-29", "time": "15:00", "is_booked": true },
+  { "slot_id": "S028", "property_id": "P013", "date": "2026-07-30", "time": "10:00", "is_booked": true },
+
+  { "slot_id": "S029", "property_id": "P014", "date": "2026-08-01", "time": "16:00", "is_booked": false },
+  { "slot_id": "S030", "property_id": "P014", "date": "2026-08-02", "time": "09:30", "is_booked": false },
+
+  { "slot_id": "S031", "property_id": "P015", "date": "2026-07-30", "time": "15:00", "is_booked": false }
+]

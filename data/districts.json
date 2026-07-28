@@ -1,0 +1,23 @@
+{
+  "city": "Hà Nội",
+  "note": "Danh mục quận hợp lệ. Tool search_properties phải validate input người dùng với danh sách này. Quận không có trong đây (ví dụ 'Atlantis') => trả về LỖI, KHÔNG được đoán bừa.",
+  "districts": [
+    { "name": "Cầu Giấy", "aliases": ["cau giay", "caugiay"], "area_type": "sinh viên", "avg_price_vnd": 4500000 },
+    { "name": "Đống Đa", "aliases": ["dong da", "dongda"], "area_type": "sinh viên", "avg_price_vnd": 4000000 },
+    { "name": "Hai Bà Trưng", "aliases": ["hai ba trung", "haibatrung", "hbt"], "area_type": "hỗn hợp", "avg_price_vnd": 5500000 },
+    { "name": "Thanh Xuân", "aliases": ["thanh xuan", "thanhxuan"], "area_type": "hỗn hợp", "avg_price_vnd": 4800000 },
+    { "name": "Ba Đình", "aliases": ["ba dinh", "badinh"], "area_type": "trung tâm", "avg_price_vnd": 8000000 },
+    { "name": "Nam Từ Liêm", "aliases": ["nam tu liem", "namtuliem", "từ liêm", "tu liem"], "area_type": "văn phòng", "avg_price_vnd": 7000000 },
+    { "name": "Tây Hồ", "aliases": ["tay ho", "tayho"], "area_type": "cao cấp", "avg_price_vnd": 9500000 },
+    { "name": "Hoàng Mai", "aliases": ["hoang mai", "hoangmai"], "area_type": "giá rẻ", "avg_price_vnd": 3500000 },
+    { "name": "Long Biên", "aliases": ["long bien", "longbien"], "area_type": "giá rẻ", "avg_price_vnd": 3800000 },
+    { "name": "Hoàn Kiếm", "aliases": ["hoan kiem", "hoankiem"], "area_type": "trung tâm", "avg_price_vnd": 10000000 }
+  ],
+  "property_types": [
+    "phòng trọ",
+    "chung cư mini",
+    "studio",
+    "căn hộ dịch vụ",
+    "nhà nguyên căn"
+  ]
+}
